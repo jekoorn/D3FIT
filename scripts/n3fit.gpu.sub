@@ -1,0 +1,15 @@
+executable = ./n3fit.gpu.sh
+arguments = $(RUNCARD) $(IREP) 
+log        = ./testlogs/fit-$(IREP).log
+output     = ./outfiles/fit-$(IREP).txt
+error      = ./outfiles/fit-$(IREP).err
+request_gpus   = 1
+requirements = regexp("L40S", TARGET.GPUs_DeviceName)
+request_memory = 16G
+request_disk   = 16G
+
++UseOS            = "el9"
++JobCategory      = "short"
++accounting_group = "theorie"
+
+queue IREP from seq 1 130 | 

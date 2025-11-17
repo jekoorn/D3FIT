@@ -1,0 +1,15 @@
+executable = ./n3fit.cpu.sh
+arguments =  $(RUNCARD) $(IREP)
+log        = ./testlogs/fit-$(IREP).log
+output     = ./outfiles/fit-$(IREP).txt
+error      = ./outfiles/fit-$(IREP).err
+
+request_cpus   = 16
+request_memory = 16G
+request_disk   = 16G
+
++UseOS            = "el9"
++JobCategory      = "short"
++accounting_group = "theorie"
+
+queue IREP from seq 1 130 | 

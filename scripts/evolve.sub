@@ -1,0 +1,17 @@
+executable = evolve.sh
+arguments  = $(RUNCARD)
+
+log    = ./testlogs/evolve-$(RUNCARD).log
+output = ./outfiles/evolve-$(RUNCARD).out
+error  = ./outfiles/evolve-$(RUNCARD).err
+
+request_cpus   = 1
+request_memory = 16G
+request_disk   = 16G
+
++UseOS            = "el9"
++JobCategory      = "short"
++accounting_group = "theorie"
+
+queue
+

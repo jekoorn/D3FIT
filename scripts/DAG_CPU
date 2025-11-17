@@ -1,0 +1,41 @@
+# usage:
+# 	 condor_submit_dag dagman.cpu.dag
+#
+
+
+# -------------------------
+# 1. vp-setupfit
+# -------------------------
+
+
+JOB SETUP vpsetupfit.sub
+VARS SETUP RUNCARD="RUNCARD_ID_REPLACE_ME"
+RETRY SETUP 1
+
+
+# -------------------------
+# 2. n3fit
+# -------------------------
+
+JOB N3FIT n3fit.cpu.sub
+VARS N3FIT RUNCARD="RUNCARD_ID_REPLACE_ME"
+RETRY N3FIT 2
+
+# -------------------------
+# 2. evolven3fit and postfit and cp -r
+# -------------------------
+
+PARENT SETUP CHILD N3FIT
+
+JOB EVOLVE evolve.sub
+VARS EVOLVE RUNCARD="RUNCARD_ID_REPLACE_ME"
+RETRY EVOLVE 3
+
+PARENT N3FIT CHILD EVOLVE
+
+PRIORITY SETUP 1
+PRIORITY N3FIT 2
+PRIORITY EVOLVE 3
+
+
+CONFIG=DAGMAN.config

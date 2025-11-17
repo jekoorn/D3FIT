@@ -1,0 +1,16 @@
+executable = vpsetupfit.sh
+arguments  = $(RUNCARD)
+log        = ./testlogs/vpsetupfit.log
+output     = ./outfiles/vpsetupfit.out
+error      = ./outfiles/vpsetupfit.err
+
+request_cpus   = 1
+request_memory = 32G
+request_disk   = 32G
+
++UseOS            = "el9"
++JobCategory      = "short"
++accounting_group = "theorie"
+
+queue
+
