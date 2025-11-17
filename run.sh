@@ -52,6 +52,33 @@ sed -i "s|CURRENTDIRCHANGEINSCRIPT|${workingdir}/results|g" vpsetupfit.sh
 sed -i "s|CURRENTDIRCHANGEINSCRIPT|${workingdir}/results|g" n3fit.cpu.sh
 sed -i "s|CURRENTDIRCHANGEINSCRIPT|${workingdir}/results|g" n3fit.gpu.sh
 
+echo "******************************************************************"
+echo "*"
+echo "*"
+echo "*             ██████╗ ██████╗ ███████╗██╗████████╗"
+echo "*             ██╔══██╗╚════██╗██╔════╝██║╚══██╔══╝"
+echo "*             ██║  ██║ █████╔╝█████╗  ██║   ██║"
+echo "*             ██║  ██║ ╚═══██╗██╔══╝  ██║   ██║"
+echo "*             ██████╔╝██████╔╝██║     ██║   ██║"
+echo "*             ╚═════╝ ╚═════╝ ╚═╝     ╚═╝   ╚═╝"
+echo "*"
+echo "*"
+echo "*  Starting D3FIT submission..."
+echo "*"
+echo "*  Runcard:  {$runcard}"
+echo "*"
+echo "*  Mode: ${dag}"
+echo "*"
+echo "*  Current path is: ${workingdir}"
+echo "*"
+echo "*  Writing results to: ${dir}"
+echo "*"
+echo "******************************************************************"
+
+
+
+
+
 # submit
 echo 'condor_submit_dag -f -batch-name "$batch" "$dag"'
 
