@@ -1,15 +1,16 @@
 #!/bin/bash
 
 RUNCARD=$1
-IREP=$2
-DIR=fit-$RUNCARD
+shift
+IREP_LIST="$@"
 
+tmp="${RUNCARD/.yml/}"
+RUNCARD_noyml="${tmp/.yaml/}"
+DIR=fit-$RUNCARD_noyml
 
 # Check for .yaml or .yml
-if [ -f "${RUNCARD}.yaml" ]; then
-    RCFILE="${RUNCARD}.yaml"
-elif [ -f "${RUNCARD}.yml" ]; then
-    RCFILE="${RUNCARD}.yml"
+if [ -f "${RUNCARD}" ]; then
+    RCFILE="${RUNCARD}"
 else
     echo "Error: no runcard found for ${RUNCARD} (.yaml or .yml)"
     exit 1
@@ -21,6 +22,18 @@ RUNCARDDIR=CURRENTDIRCHANGEINSCRIPT/$DIR/
 cd $RUNCARDDIR
 
 conda activate nnpdf-fit
-n3fit $RCFILE $IREP
 
-echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${IREP} -- CPU" >> CURRENTDIRCHANGEINSCRIPT/submitted.fits
+# for i in $IREP_LIST; do
+#     n3fit $RCFILE $i
+#     echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${i} -- CPU" >> CURRENTDIRCHANGEINSCRIPT/submitted.fits
+# done
+
+# get lowest and highest
+ilow=$(printf "%s\n" $IREP_LIST | sort -n | head -1)
+ihigh=$(printf "%s\n" $IREP_LIST | sort -n | tail -1)
+
+n3fit "$RCFILE" "$ilow" -r "$ihigh"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${ilow}-${ihigh} -- CPU" \
+    >> CURRENTDIRCHANGEINSCRIPT/submitted.fits
+

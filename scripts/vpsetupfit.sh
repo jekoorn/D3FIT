@@ -2,14 +2,15 @@
 
 source ~/.bashrc
 RUNCARD=$1
-DIR=fit-$RUNCARD
+
+tmp="${RUNCARD/.yml/}"
+RUNCARD_noyml="${tmp/.yaml/}"
+DIR=fit-$RUNCARD_noyml
 
 
 # Check for .yaml or .yml
-if [ -f "${RUNCARD}.yaml" ]; then
-    RCFILE="${RUNCARD}.yaml"
-elif [ -f "${RUNCARD}.yml" ]; then
-    RCFILE="${RUNCARD}.yml"
+if [ -f "${RUNCARD}" ]; then
+    RCFILE="${RUNCARD}"
 else
     echo "Error: no runcard found for ${RUNCARD} (.yaml or .yml)"
     exit 1

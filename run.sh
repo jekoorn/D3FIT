@@ -16,17 +16,18 @@ case "$mode" in
     *) echo "mode must be gpu or cpu" >&2; exit 1 ;;
 esac
 
+tmp="${runcard/.yml/}"
+RUNCARD_noyml="${tmp/.yaml/}"
 
-dir=results/fit-${runcard}
+
+dir=results/fit-${RUNCARD_noyml}
 workingdir=$(pwd)
 #workingdir=/data/theorie/jkoorn/nnpdf/fits/test_runall
 mkdir -p $workingdir/$dir
 
 # Check for .yaml or .yml
-if [ -f "${runcard}.yaml" ]; then
-    RCFILE="${runcard}.yaml"
-elif [ -f "${runcard}.yml" ]; then
-    RCFILE="${runcard}.yml"
+if [ -f "${runcard}" ]; then
+    RCFILE="${runcard}"
 else
     echo "Error: no runcard found for ${runcard} (.yaml or .yml)"
     exit 1
@@ -65,13 +66,13 @@ echo "*"
 echo "*"
 echo "*  Starting D3FIT submission..."
 echo "*"
-echo "*  Runcard:  {$runcard}"
+echo "*  Runcard:  $runcard"
 echo "*"
 echo "*  Mode: ${dag}"
 echo "*"
 echo "*  Current path is: ${workingdir}"
 echo "*"
-echo "*  Writing results to: ${dir}"
+echo "*  Writing results to: ${workingdir}/${dir}"
 echo "*"
 echo "******************************************************************"
 
@@ -80,6 +81,6 @@ echo "******************************************************************"
 
 
 # submit
-echo 'condor_submit_dag -f -batch-name "$batch" "$dag"'
+condor_submit_dag -f -batch-name "$batch" "$dag"
 
 cd ..

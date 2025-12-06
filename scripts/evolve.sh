@@ -3,7 +3,10 @@
 source ~/.bashrc
 conda activate nnpdf-fit
 
-RUNCARD=$1
+arg=$1
+tmp="${arg/.yml/}"
+RUNCARD="${tmp/.yaml/}"
+
 FITPATH=CURRENTDIRCHANGEINSCRIPT/fit-$RUNCARD
 cd $FITPATH
 

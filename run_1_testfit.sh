@@ -49,7 +49,7 @@ tmp="${dag}.tmp"
 sed "s/RUNCARD_ID_REPLACE_ME/${runcard}/g" "$dag" > "$tmp"
 mv "$tmp" "$dag"
 tmp="${dag}.tmp"
-sed "s/seq 1 130/seq 1 2/g" "$fit" > "$tmp"
+sed "s/seq 1 130/seq 1 10/g" "$fit" > "$tmp"
 mv "$tmp" "$fit"
 
 sed -i "s|CURRENTDIRCHANGEINSCRIPT|${workingdir}|g" evolve.sh
