@@ -1,8 +1,7 @@
 #!/bin/bash
 
 RUNCARD=$1
-shift
-IREP_LIST="$@"
+IREP=$2
 
 tmp="${RUNCARD/.yml/}"
 RUNCARD_noyml="${tmp/.yaml/}"
@@ -28,12 +27,17 @@ conda activate nnpdf-fit
 #     echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${i} -- CPU" >> CURRENTDIRCHANGEINSCRIPT/submitted.fits
 # done
 
-# get lowest and highest
-ilow=$(printf "%s\n" $IREP_LIST | sort -n | head -1)
-ihigh=$(printf "%s\n" $IREP_LIST | sort -n | tail -1)
+istart="$IREP"
+iend=$(( $istart + 23 )) # do 4 replicas
 
-n3fit "$RCFILE" "$ilow" -r "$ihigh"
-
-echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${ilow}-${ihigh} -- CPU" \
+echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${istart}-${iend} -- CPU -- Submitted" \
     >> CURRENTDIRCHANGEINSCRIPT/submitted.fits
+
+echo "n3fit ${RCFILE} {$istart} -r {$iend}"
+n3fit "$RCFILE" "$istart" -r "$iend"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${istart}-${iend} -- CPU -- Completed" \
+    >> CURRENTDIRCHANGEINSCRIPT/submitted.fits
+
+
 

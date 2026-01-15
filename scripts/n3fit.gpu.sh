@@ -1,9 +1,7 @@
 #!/bin/bash
 
-
 RUNCARD=$1
-shift
-IREP_LIST="$@"
+IREP=$2
 
 tmp="${RUNCARD/.yml/}"
 RUNCARD_noyml="${tmp/.yaml/}"
@@ -24,17 +22,15 @@ cd CURRENTDIRCHANGEINSCRIPT/$DIR
 
 conda activate nnpdf-fit
 
-#for i in $IREP_LIST; do
-#    n3fit $RCFILE $i
-#    echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${i} -- GPU" >> CURRENTDIRCHANGEINSCRIPT/submitted.fits
-#done
+istart="$IREP"
+iend=$(( $istart + 15 )) # do 4 replicas
 
-ilow=$(printf "%s\n" $IREP_LIST | sort -n | head -1)
-ihigh=$(printf "%s\n" $IREP_LIST | sort -n | tail -1)
-
-n3fit "$RCFILE" "$ilow" -r "$ihigh"
-
-echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${ilow}-${ihigh} -- GPU" \
+echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${istart}-${iend} -- GPU -- Submitted" \
     >> CURRENTDIRCHANGEINSCRIPT/submitted.fits
 
+echo "n3fit ${RCFILE} {$istart} -r {$iend}"
+n3fit "$RCFILE" "$istart" -r "$iend"
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') ${RUNCARD} -- ${istart}-${iend} -- GPU -- Completed" \
+    >> CURRENTDIRCHANGEINSCRIPT/submitted.fits
 
